@@ -88,14 +88,6 @@ docker compose down -v
   ```json
   {"email":"newuser@a.com","password":"pass"}
   ```
-- **Non-resolvable parent POM**: Use a stable Spring Boot version in `pom.xml`:
-  ```xml
-  <parent>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-parent</artifactId>
-      <version>3.2.0</version>
-  </parent>
-  ```
 - **WeakKeyException**: Ensure `JWT_SECRET` is ≥ 32 characters:
   ```yaml
   JWT_SECRET: mySuperSecretKeyForJWTWhichIsLongEnough1234567890
