@@ -1,10 +1,18 @@
 # Mini Test: Two Spring Boot Applications with Postgres and Docker
 
-Two Spring Boot applications (`auth-api` and `data-api`) with PostgreSQL, running via Docker Compose. Uses Java 21 and Spring Boot 3.2.0. Compilation is performed inside Docker.
+Two Spring Boot applications (`auth-api` and `data-api`) with PostgreSQL, running via Docker Compose. Uses Java 21 and Spring Boot 3.2.0. Includes JWT authentication, text processing, persistent data storage, logging, and Swagger UI for API documentation.
 
 ## Requirements
 - Docker and Docker Compose
 - (No local Java or Maven installation required)
+
+## Architecture
+- **auth-api**: User registration/login (JWT), text processing (calls `data-api`), JPA with PostgreSQL.
+- **data-api**: Text transformation (reverse + uppercase).
+- **PostgreSQL**: Stores users and processing logs.
+- **Persistent Storage**: Docker volumes for DB and logs.
+- **Logging**: SLF4J/Logback with file rotation.
+- **Swagger UI**: Available at `http://localhost:8080/swagger-ui.html`.
 
 ## Structure
 - `/auth-api`: Service A (authentication, JPA, calls Service B)

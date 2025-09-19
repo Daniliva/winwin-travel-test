@@ -6,12 +6,14 @@ import java.util.UUID;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "UUID DEFAULT gen_random_uuid()")
     private UUID id;
-    
-    @Column(unique = true)
+
+    @Column(unique = true, nullable = false)
     private String email;
-    
+
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
     public UUID getId() { return id; }
