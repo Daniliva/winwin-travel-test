@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.UUID;
-/*
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -29,17 +29,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
-            log.debug("Processing JWT token from request: {}", token.substring(0, 10) + "..."); // Log partial token for security
+            log.debug("Processing JWT token from request: {}", token.substring(0, Math.min(token.length(), 10)) + "...");
 
             if (jwtUtil.validateToken(token)) {
                 UUID userId = jwtUtil.extractUserId(token);
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userId, null, null); // No authorities needed for now
+                        userId, null, null);
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
                 log.debug("JWT token validated successfully for user ID: {}", userId);
             } else {
-                log.warn("JWT token validation failed for token: {}", token.substring(0, 10) + "...");
+                log.warn("JWT token validation failed for token: {}", token.substring(0, Math.min(token.length(), 10)) + "...");
             }
         } else {
             log.debug("No JWT token found in request header");
@@ -47,4 +47,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-}*/
+}

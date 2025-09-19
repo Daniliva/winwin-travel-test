@@ -78,7 +78,6 @@ public class ProcessService {
                 throw new RuntimeException("Invalid response from data-api: missing 'result' field");
             }
 
-            // Save log
             ProcessingLog processingLog = new ProcessingLog();
             processingLog.setUserId(userId);
             processingLog.setInputText(text);

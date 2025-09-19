@@ -2,13 +2,12 @@ package com.example.authapi.controller;
 
 import com.example.authapi.config.JwtUtil;
 import com.example.authapi.dto.ProcessRequestDto;
-
 import com.example.authapi.dto.ProcessResponseDto;
 import com.example.authapi.service.ProcessService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +26,12 @@ public class ProcessController {
     private final JwtUtil jwtUtil;
     private final ProcessService processService;
 
-
     @PostMapping("/process")
-    @Operation(summary = "Process text with authentication", description = "Validates JWT token and processes text using data-api")
+    @Operation(
+            summary = "Process text with authentication",
+            description = "Processes text using data-api, requires a valid JWT token",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Text processed successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input or missing request body"),
@@ -72,5 +74,15 @@ public class ProcessController {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                     .body("Service unavailable: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/hello")
+    @Operation(summary = "Return a hello message", description = "Returns a simple hello message for testing controller connectivity")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Hello message returned successfully")
+    })
+    public ResponseEntity<String> hello() {
+        log.debug("Received request for /api/hello");
+        return ResponseEntity.ok("hello");
     }
 }
