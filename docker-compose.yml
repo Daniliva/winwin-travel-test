@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data 
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -30,8 +30,10 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mini_test
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: password
-      JWT_SECRET: mySuperSecretKeyForJWTWhichIsLongEnough1234567890
+      JWT_SECRET: 8fW9k3mPq7xR2vT4zY6uJ9hL5nB8mK2pQ3wE6rT9yU=
       INTERNAL_TOKEN: defaultToken
+    volumes:
+      - auth_logs:/app/logs  
     depends_on:
       postgres:
         condition: service_healthy
@@ -46,14 +48,18 @@ services:
       - "8081:8081"
     environment:
       INTERNAL_TOKEN: defaultToken
+    volumes:
+      - data_logs:/app/logs  
     depends_on:
       - auth-api
     networks:
       - app-network
 
+volumes:
+  postgres_data: 
+  auth_logs:      
+  data_logs:     
+
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  postgres_data:
